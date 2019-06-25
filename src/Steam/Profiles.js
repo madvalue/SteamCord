@@ -24,6 +24,24 @@ var Profile = {
             throw new Error("Something went wrong when searching for user");
         }
     },
+
+    getSummaries: async (username) => {
+        try {
+            var summary = Cache.get(`profile.${username}`);
+            if (summary) return summary;
+
+            var steamid = await Profile.usernameToID(username);
+            var request = await axios.get(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${STEAM_KEY}&steamids=${steamid}`);
+            var data = request.data;
+
+            if (data.length > 0) {
+                Cache.put(`profile.${username}`, data.response.players[0]);
+                return data.response.players[0];
+            } else throw new Error("Can't find profile with specified username");
+        } catch (Err) {
+            throw Err;
+        }
+    },
 };
 
 module.exports = Profile;
