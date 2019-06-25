@@ -20,6 +20,8 @@
     "axios": "^0.19.0",
     "cache": "^2.1.0",
     "discord.js": "^11.5.1",
-    "dotenv": "^8.0.0"
+    "dotenv": "^8.0.0",
+    "util.promisify": "^1.0.0",
+    "xml2js": "^0.4.19"
   }
 }
