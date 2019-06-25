@@ -23,10 +23,26 @@ Commands.registerCommand("profile", async (ctx, args) => {
         var bans = await Profiles.getBans(steamid);
         var primary_group = await Groups.getByID(summaries.primaryclanid);
 
-        console.log(summaries);
-        console.log(bans);
-        console.log(primary_group);
+        var informations = "";
+        informations += `**Username:** ${summaries.personaname}\n`;
+        informations += primary_group.memberList.groupDetails[0].groupName[0].length > 0 ? `**Primary group:** ${primary_group.memberList.groupDetails[0].groupName[0]}\n` : "";
+        informations += `**Privacy:** ${summaries.communityvisibilitystate == 3 ? 'Public' : 'Private'}\n`;
+        informations += `**SteamID:** ${summaries.steamid}\n`;
 
+        var fields = [];
+        fields.push({
+            name: "Informations",
+            value: informations,
+            inline: true
+        });
+        fields.push({
+            name: "Bans",
+            value: `
+                ${bans.VACBanned ? EMOJI_YES : EMOJI_NO} Valve Anti-Cheat
+                ${bans.CommunityBanned ? EMOJI_YES : EMOJI_NO} Community
+            `,
+            inline: true
+        });
         ctx.reply("", {
             embed: {
                 color: 4886754,
@@ -38,26 +54,7 @@ Commands.registerCommand("profile", async (ctx, args) => {
                 thumbnail: {
                     url: summaries.avatarfull
                 },
-                fields: [
-                    {
-                        name: "Informations",
-                        value: `
-                            **Username:** ${summaries.personaname}`
-                            + `${primary_group.memberList.groupDetails[0].groupName[0].length > 0 ? "\n**Primary group:**" : ""} ${primary_group.memberList.groupDetails[0].groupName[0]}
-                            ` + `**Privacy:** ${summaries.communityvisibilitystate == 3 ? 'Public' : 'Private'}
-                            **SteamID:** ${summaries.steamid}
-                        `,
-                        inline: true
-                    },
-                    {
-                        name: "Bans",
-                        value: `
-                            ${bans.VACBanned ? EMOJI_YES : EMOJI_NO} Valve Anti-Cheat
-                            ${bans.CommunityBanned ? EMOJI_YES : EMOJI_NO} Community
-                        `,
-                        inline: true
-                    }
-                ]
+                fields: fields
             }
         })
     } catch (Err) {
