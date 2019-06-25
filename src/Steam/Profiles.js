@@ -56,6 +56,21 @@ var Profile = {
         } catch (Err) {
             throw Err;
         }
+    },
+
+    getGroups: async (steamid) => {
+        try {
+            var groups = Cache.get(`groups.${steamid}`);
+            if (groups) return groups;
+
+            var request = await axios.get(`https://api.steampowered.com/ISteamUser/GetUserGroupList/v1/?key=${STEAM_KEY}&steamid=${steamid}`);
+            var data = request.data.response;
+
+            if (data.success == false) return false;
+            else return data;
+        } catch (Err) {
+            throw Err;
+        }
     }
 };
 
