@@ -25,23 +25,39 @@ var Profile = {
         }
     },
 
-    getSummaries: async (username) => {
+    getSummaries: async (steamid) => {
         try {
-            var summary = Cache.get(`profile.${username}`);
+            var summary = Cache.get(`profile.${steamid}`);
             if (summary) return summary;
 
-            var steamid = await Profile.usernameToID(username);
             var request = await axios.get(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${STEAM_KEY}&steamids=${steamid}`);
             var data = request.data;
 
             if (data.length > 0) {
-                Cache.put(`profile.${username}`, data.response.players[0]);
+                Cache.put(`profile.${steamid}`, data.response.players[0]);
                 return data.response.players[0];
-            } else throw new Error("Can't find profile with specified username");
+            } else throw new Error("Can't find profile with specified steam id");
         } catch (Err) {
             throw Err;
         }
     },
+
+    getBans: async (steamid) => {
+        try {
+            var bans = Cache.get(`bans.${steamid}`);
+            if (bans) return bans;
+
+            var request = await axios.get(`https://api.steampowered.com/ISteamUser/GetPlayerBans/v1/?key=${STEAM_KEY}&steamids=${steamid}`);
+            var data = request.data;
+
+            if (data.players.length > 0) {
+                Cache.put(`bans.${steamid}`, data.players[0]);
+                return data.players[0];
+            } else throw new Error("Can't find information about bans for specific steam id");
+        } catch (Err) {
+            throw Err;
+        }
+    }
 };
 
 module.exports = Profile;
