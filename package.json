@@ -1,0 +1,25 @@
+{
+  "name": "steamcord",
+  "version": "1.0.0",
+  "description": "discord hack week project",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/madvalue/SteamCord.git"
+  },
+  "author": "madvalue",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/madvalue/SteamCord/issues"
+  },
+  "homepage": "https://github.com/madvalue/SteamCord#readme",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "cache": "^2.1.0",
+    "discord.js": "^11.5.1",
+    "dotenv": "^8.0.0"
+  }
+}
