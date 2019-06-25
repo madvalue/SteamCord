@@ -33,7 +33,7 @@ var Profile = {
             var request = await axios.get(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${STEAM_KEY}&steamids=${steamid}`);
             var data = request.data;
 
-            if (data.length > 0) {
+            if (data.response.players.length > 0) {
                 Cache.put(`profile.${steamid}`, data.response.players[0]);
                 return data.response.players[0];
             } else throw new Error("Can't find profile with specified steam id");
