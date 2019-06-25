@@ -17,11 +17,10 @@ var Profile = {
             if (data.success == 1) {
                 Cache.put(`steamid64.${username}`, data.steamid);
                 return data.steamid;
-            } else if (data.success == 42) throw new Error("Can't found user with that URL");
+            } else if (data.success == 42) throw new Error("Can't find user with that URL");
             else throw new Error("Something went wrong when searching for user"); 
         } catch (Err) {
-            console.log(Err);
-            throw new Error("Something went wrong when searching for user");
+            throw Err;
         }
     },
 
